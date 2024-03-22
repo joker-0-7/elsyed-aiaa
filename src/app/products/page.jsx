@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Loader from "../utils/loader";
+import { Pagination } from "@mui/material";
 function Products() {
   const [products, setProducts] = useState([]);
   const [client, setClient] = useState(false);
@@ -134,6 +135,9 @@ function Products() {
                   </div>
                 );
               })}
+          </div>
+          <div dir="ltr">
+            <Pagination count={10} variant="outlined" shape="rounded" />;
           </div>
         </div>
       </div>
