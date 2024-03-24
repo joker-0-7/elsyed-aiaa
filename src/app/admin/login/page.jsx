@@ -5,6 +5,7 @@ import axios from "axios";
 import Loader from "@/app/utils/loader";
 import { useRouter } from "next/navigation";
 function Page() {
+  const [show, setShow] = useState(false);
   const router = useRouter();
   const [user, setUser] = useState({
     email: "",
@@ -47,7 +48,7 @@ function Page() {
             }}
           >
             <div
-              className="col-lg-6 col-sm-0"
+              className="col-lg-6 col-sm-0 d-none d-md-block"
               style={{
                 backgroundImage: 'url("/admin/login.png")',
                 backgroundSize: "cover",
@@ -78,7 +79,7 @@ function Page() {
                         onChange={handleChange}
                       />
                     </div>
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
                       <label htmlFor="password" className="form-label">
                         كلمه السر
                       </label>
@@ -89,6 +90,44 @@ function Page() {
                         id="password"
                         onChange={handleChange}
                       />
+                    </div> */}
+                    <div className="mb-3 ">
+                      <div className="lable">
+                        <label htmlFor="password" className="form-label">
+                          كلمه السر
+                        </label>
+                      </div>
+                      <div className="inp position-relative">
+                        <input
+                          type={show ? "text" : "password"}
+                          placeholder="كلمة السر"
+                          name="password"
+                          className="form-control"
+                          onChange={handleChange}
+                        />
+                        <div
+                          className="position-absolute"
+                          style={{
+                            left: "10px",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                          }}
+                        >
+                          {show ? (
+                            <i
+                              className="bi bi-eye"
+                              style={{ cursor: "pointer" }}
+                              onClick={() => setShow(!show)}
+                            ></i>
+                          ) : (
+                            <i
+                              className="bi bi-eye-slash"
+                              style={{ cursor: "pointer" }}
+                              onClick={() => setShow(!show)}
+                            ></i>
+                          )}
+                        </div>
+                      </div>
                     </div>
                     <div className="mb-3">
                       <button className="btn btn-primary w-100">دخول</button>

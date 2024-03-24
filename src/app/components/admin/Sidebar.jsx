@@ -1,6 +1,6 @@
+"use client";
 import React, { useState } from "react";
 import {
-  AppBar,
   Toolbar,
   Avatar,
   Box,
@@ -13,10 +13,10 @@ import {
   makeStyles,
   CssBaseline,
   Drawer,
-  Typography,
 } from "@material-ui/core";
-import { Apps, Menu, AssignmentInd, Home } from "@material-ui/icons";
+import { Menu } from "@material-ui/icons";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
@@ -53,8 +53,12 @@ const listItems = [
     link: "/admin/order-support",
   },
 ];
-
 export default function App() {
+  const router = useRouter();
+  const logOut = () => {
+    window.localStorage.removeItem("authAdminPanel");
+    router.push("/admin/login");
+  };
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -108,7 +112,7 @@ export default function App() {
           ))}
         </List>
         <List>
-          <ListItem className={classes.listItem} button>
+          <ListItem className={classes.listItem} button onClick={logOut}>
             <ListItemIcon className={classes.listItem}>
               <i className="bi bi-box-arrow-in-left fs-5"></i>
             </ListItemIcon>

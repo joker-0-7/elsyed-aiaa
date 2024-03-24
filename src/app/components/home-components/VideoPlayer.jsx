@@ -1,18 +1,36 @@
+"use client";
 import React from "react";
 
-function VideoPlayer() {
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+
+import { Pagination } from "swiper/modules";
+
+export default function VideoPlayer() {
   return (
-    <div className="col-12 text-center">
-      <div className="video-player">
-        <div className="container">
-          <video controls style={{ objectFit: "cover", borderRadius: "16px" }}>
-            <source src="/assets/videos/video.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+    <>
+      <Swiper
+        slidesPerView={3}
+        spaceBetween={30}
+        pagination={{
+          clickable: true,
+        }}
+        modules={[Pagination]}
+        className="mySwiper"
+      >
+        <div className="row row-gap-5">
+          <div className="col-lg-5 col-sm-12">
+            <SwiperSlide>Slide 1</SwiperSlide>
+          </div>
+          <div className="col-lg-5 col-sm-12">
+            <SwiperSlide>Slide 2</SwiperSlide>
+          </div>
+          <div className="col-lg-5 col-sm-12">
+            <SwiperSlide>Slide 3</SwiperSlide>
+          </div>
         </div>
-      </div>
-    </div>
+      </Swiper>
+    </>
   );
 }
-
-export default VideoPlayer;

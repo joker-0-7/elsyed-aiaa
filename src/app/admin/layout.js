@@ -1,9 +1,17 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import "./globals-admin.css";
 import Sidebar from "../components/admin/Sidebar";
+import { useEffect } from "react";
 
 export default function AdminLayout({ children }) {
+  const router = useRouter();
+  useEffect(() => {
+    const state = window.localStorage.getItem("authAdminPanel");
+    if (!state) {
+      router.push("/admin/login");
+    }
+  });
   const pathname = usePathname();
   return (
     <div className="admin-page" style={{ minHeight: "100vh" }}>
