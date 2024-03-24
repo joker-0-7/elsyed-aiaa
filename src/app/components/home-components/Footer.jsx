@@ -3,6 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { socials } from "../social";
 
 function Footer() {
   const [products, setProducts] = useState([]);
@@ -28,7 +29,6 @@ function Footer() {
       while (randomProducts.length < 4) {
         const randomIndex = Math.floor(Math.random() * products.length);
         const randomProduct = products[randomIndex];
-        console.log(randomProduct);
         if (
           !randomProducts.some((product) => product._id === randomProduct._id)
         ) {
@@ -59,6 +59,20 @@ function Footer() {
                   <p className="f-5 fw-bold text-end">
                     من المهم جدًا أن يتمكن العميل من الحصول على بعض دعم العملاء
                   </p>
+                  <div className="socials d-flex w-75 justify-content-between">
+                    {socials.map((social) => {
+                      return (
+                        <div key={social.id}>
+                          <Link
+                            href={social.link}
+                            className="text-primary fw-bold fs-5"
+                          >
+                            {social.icon}
+                          </Link>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
                 <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4 text-center">
                   <h6 className="text-uppercase fw-bold mb-4">منتج</h6>

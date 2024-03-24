@@ -1,14 +1,17 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 function Nav() {
+  const pathname = usePathname();
   return (
     <nav className="navbar navbar-expand-lg">
       <div className="container">
-        <a className="navbar-brand" href="#">
+        <Link className="navbar-brand" href="/">
           <Image src="/logo.png" alt="Logo" width={100} height={100} />
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -24,7 +27,9 @@ function Nav() {
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link
-                className="nav-link active fs-5"
+                className={`nav-link ${
+                  pathname.split("/")[1] == "" && "active"
+                } fs-5`}
                 aria-current="page"
                 href="/"
               >
@@ -32,17 +37,32 @@ function Nav() {
               </Link>
             </li>
             <li className="nav-item dropdown">
-              <Link className="nav-link fs-5" href="/products">
+              <Link
+                className={`nav-link ${
+                  pathname.split("/")[1] == "products" && "active"
+                } fs-5`}
+                href="/products"
+              >
                 المنتجات
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link fs-5" href="/#service">
+              <Link
+                className={`nav-link ${
+                  pathname.split("/")[1] == "#service" && "active"
+                } fs-5`}
+                href="/#service"
+              >
                 الخدمات
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link fs-5" href="about-us">
+              <Link
+                className={`nav-link ${
+                  pathname.split("/")[1] == "about-us" && "active"
+                } fs-5`}
+                href="about-us"
+              >
                 من نحن
               </Link>
             </li>

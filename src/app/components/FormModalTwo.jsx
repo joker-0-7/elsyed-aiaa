@@ -1,22 +1,26 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 export const lists = [
   { id: 1, name: "Bank", icon: "building-black" },
   { id: 2, name: "Vodafone Cash", icon: "vf-cash" },
   { id: 3, name: "Usdt", icon: "tether" },
   { id: 4, name: "Paypal", icon: "paypal" },
 ];
-function FormModalTwo({ changeMethod }) {
+function FormModalTwo({ changeMethod, handleChange }) {
+  const [selectedOption, setSelectedOption] = useState(0);
   return (
     <div className="ul w-100 mt-5">
       <ul className="list-unstyled d-flex flex-column justify-content-around align-items-center w-100">
-        {lists.map((list) => {
+        {lists.map((list, i) => {
           return (
             <li
               key={list.id}
-              className="w-100 mb-4 rounded-3 px-4 py-2"
-              style={{ backgroundColor: "#ffffff" }}
+              className="w-100 mb-4 rounded-3 px-4 py-2 border-primary"
+              style={{
+                backgroundColor: "#ffffff",
+                border: `${i === selectedOption ? "solid 1px" : "none"}`,
+              }}
             >
               <label
                 className="form-check-label d-flex justify-content-between align-items-center w-100 flex-row-reverse"
@@ -29,8 +33,11 @@ function FormModalTwo({ changeMethod }) {
                   id={list.name}
                   value={list.name}
                   onChange={(e) => {
+                    handleChange(e);
+                    setSelectedOption(i);
                     changeMethod(e.target.value);
                   }}
+                  checked={selectedOption === i}
                 />
                 <div className="title d-flex align-items-center">
                   <div

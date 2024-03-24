@@ -6,6 +6,7 @@ import Nav from "./components/home-components/Nav";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Footer from "./components/home-components/Footer";
 import { usePathname } from "next/navigation";
+import { ToastContainer } from "react-toastify";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -33,6 +34,19 @@ export default function RootLayout({ children }) {
             }}
           ></div>
         )}
+        {/* <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          limit={2}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick={false}
+          rtl
+          pauseOnFocusLoss={false}
+          draggable={false}
+          pauseOnHover={false}
+          theme="light"
+        /> */}
         <div
           style={{ zIndex: 99, minHeight: "100vh" }}
           className="position-relative"

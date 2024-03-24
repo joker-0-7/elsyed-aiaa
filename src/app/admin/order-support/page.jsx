@@ -14,7 +14,7 @@ function Page() {
   const [client, setClient] = useState(false);
   const getData = async () => {
     const rus = await axios.get(
-      `${process.env.NEXT_PUBLIC_API}/forms/payments`
+      `${process.env.NEXT_PUBLIC_API}/forms/contacts`
     );
     setData(rus.data);
     setClient(true);
@@ -22,24 +22,18 @@ function Page() {
   useEffect(() => {
     getData();
   }, []);
-  const acceptFun = async (e) => {
+  const handleDelete = async (e) => {
+    setClient(false);
     try {
-      const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API}/forms/payment/accept/${e}`
-      );
-      getData();
+      await axios
+        .delete(`${process.env.NEXT_PUBLIC_API}/forms/contact/${e}`)
+        .then((res) => {
+          getData();
+          setClient(true);
+        });
     } catch (err) {
       console.log(err);
-    }
-  };
-  const adjFun = async (e) => {
-    try {
-      const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API}/forms/payment/rej/${e}`
-      );
-      getData();
-    } catch (err) {
-      console.log(err);
+      setClient(true);
     }
   };
   return client ? (
@@ -50,7 +44,7 @@ function Page() {
           style={{ height: "150px" }}
         >
           <div className="title">
-            <h1>الطلبات</h1>
+            <h1>طلبات الدعم</h1>
           </div>
           <div className="btns">
             <button className="btn btn-primary">اضافة منتج</button>
@@ -61,39 +55,25 @@ function Page() {
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">رقم الطلب</th>
-                  <th scope="col">المنتج</th>
-                  <th scope="col">اجمالي التكلفة</th>
+                  <th scope="col">الاسم</th>
+                  <th scope="col">البريد الالكتروني</th>
                   <th scope="col">رقم الهاتف</th>
-                  <th scope="col">العميل</th>
                   <th scope="col">تاريخ الطلب</th>
-                  <th scope="col">طريقة الدفع</th>
-                  <th scope="col">تأكيد الدفع</th>
-                  <th scope="col">حالة الطلب</th>
+                  <th scope="col">استفسار بخصوص</th>
+                  <th scope="col">رسالة العميل</th>
+                  <th scope="col">حذف الطلب</th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((data) => {
                   return (
                     <tr key={data._id}>
-                      <th scope="row">{data._id}</th>
-                      <td>{data.productName}</td>
-                      <td>
-                        <span
-                          style={{
-                            backgroundColor: "rgba(229, 250, 234, 1)",
-                            color: "#22C55E",
-                          }}
-                          className="px-3 py-1 mx-auto fw-bold rounded-2 w-50 d-block text-center"
-                        >
-                          {data.price}
-                        </span>
-                      </td>
+                      <th scope="row">{data.name}</th>
+                      <td>{data.email}</td>
                       <td>{data.phone}</td>
-                      <td>{data.name}</td>
                       <td>
                         <span
-                          className="d-block w-100 px-2 py-1 text-secondary mx-auto text-center rounded-2"
+                          className="d-block w-75 px-2 py-1 text-secondary mx-auto text-center rounded-2"
                           style={{ backgroundColor: "#FAFAFA" }}
                         >
                           <i className="bi bi-clock ms-2"></i>
@@ -104,7 +84,7 @@ function Page() {
                             .fromNow()}
                         </span>
                       </td>
-                      <td>{data.payment}</td>
+                      <td>{data.placeType || data.interested}</td>
                       <td>
                         <span
                           className="d-block w-75 px-2 py-1 text-secondary mx-auto text-center rounded-2"
@@ -115,7 +95,7 @@ function Page() {
                             cursor: "pointer",
                           }}
                           onClick={() => {
-                            setImage(data.image);
+                            setImage(data.message);
                           }}
                         >
                           <i className="bi bi-eye ms-1"></i>
@@ -123,56 +103,18 @@ function Page() {
                         </span>
                       </td>
                       <td>
-                        {data.status == null ? (
-                          <>
-                            <span
-                              onClick={() => {
-                                acceptFun(data._id);
-                              }}
-                              className="btn"
-                              style={{
-                                backgroundColor: "rgba(229, 250, 234, 1)",
-                                color: "#22C55E",
-                              }}
-                            >
-                              موافقة
-                            </span>
-                            <span
-                              className="btn me-2"
-                              onClick={() => {
-                                adjFun(data._id);
-                              }}
-                              style={{
-                                backgroundColor: "rgba(255, 103, 103, 0.38)",
-                                color: "#D32525",
-                              }}
-                            >
-                              رفض
-                            </span>
-                          </>
-                        ) : data.status ? (
-                          <span
-                            className="btn d-flex align-items-center w-75 justify-content-center"
-                            style={{
-                              backgroundColor: "rgba(229, 250, 234, 1)",
-                              color: "#22C55E",
-                            }}
-                          >
-                            <i className="bi bi-check-circle-fill text-success ms-2"></i>
-                            نشط
-                          </span>
-                        ) : (
-                          <span
-                            className="btn me-2 d-flex align-items-center w-75 justify-content-center"
-                            style={{
-                              backgroundColor: "rgba(255, 103, 103, 0.38)",
-                              color: "#D32525",
-                            }}
-                          >
-                            <i className="bi bi-x-circle-fill text-danger ms-2"></i>
-                            ملغي
-                          </span>
-                        )}
+                        <span
+                          className="btn me-2"
+                          onClick={() => {
+                            handleDelete(data._id);
+                          }}
+                          style={{
+                            backgroundColor: "rgba(255, 103, 103, 0.38)",
+                            color: "#D32525",
+                          }}
+                        >
+                          حذف
+                        </span>
                       </td>
                     </tr>
                   );
@@ -214,16 +156,25 @@ export const Modal = ({ data }) => {
   return (
     <div>
       <div
-        className="modal fade"
+        className=" modal fade"
         id="imageOrder"
         tabIndex={-1}
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-body">
-              <Image src={data} alt="image" />
+              <p>{data}</p>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>

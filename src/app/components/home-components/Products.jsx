@@ -3,6 +3,8 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import img from "../../../../public/image/robot-smile.png";
 import axios from "axios";
+import Link from "next/link";
+import Modal from "../product/Modal";
 function Products() {
   const [products, setProducts] = useState([]);
   const fetchData = async () => {
@@ -48,20 +50,6 @@ function Products() {
         <div className="carousel-indicators">
           {getRandomProducts().map((product, i) => {
             return (
-              //     <button
-              //   type="button"
-              //   data-bs-target="#carouselExampleCaptions"
-              //   data-bs-slide-to={0}
-              //   className="active"
-              //   aria-current="true"
-              //   aria-label="Slide 1"
-              // />
-              // <button
-              //   type="button"
-              //   data-bs-target="#carouselExampleCaptions"
-              //   data-bs-slide-to={1}
-              //   aria-label="Slide 2"
-              // />
               <button
                 key={i}
                 type="button"
@@ -73,29 +61,44 @@ function Products() {
             );
           })}
         </div>
-        <div className="carousel-inner">
+        <div className="carousel-inner" style={{ minHeight: "40vh" }}>
           {getRandomProducts().map((product, i) => {
             return (
               <div
                 className={`carousel-item ${i == 0 ? "active" : ""}`}
                 key={product._id}
+                style={{ minHeight: "40vh" }}
               >
                 <Image
-                  src="/image/product-image.png"
-                  // src={product.image}
+                  src={`${process.env.NEXT_PUBLIC_API}/public/images/products/${product.image[0]}`}
                   className="d-block mx-auto"
-                  width={949}
-                  height={522}
+                  width={849}
+                  height={422}
                   alt="product-image"
                 />
                 <div className="carousel-caption d-none d-md-block text-dark">
                   <h3>{product.name}</h3>
                   <p className="fs-5">{product.description}</p>
                   <div className="btns d-flex justify-content-evenly w-50 align-items-center mx-auto">
-                    <button className="btn btn-outline-primary fs-5">
+                    <Link
+                      className="btn btn-outline-primary fs-5"
+                      href={`/products/${product._id}`}
+                    >
                       تفاصيل اكثر
-                    </button>
-                    <button className="btn btn-primary d-flex align-items-center justify-content-around fs-5">
+                    </Link>
+                    <button
+                      type="button"
+                      className="btn btn-primary d-flex align-items-center justify-content-around fs-5"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      onClick={() => {
+                        window.localStorage.setItem("price", product.price);
+                        window.localStorage.setItem(
+                          "productName",
+                          product.name
+                        );
+                      }}
+                    >
                       <span>اطلب الأن</span>
                       <span className="icon me-2">
                         <Image
@@ -131,7 +134,7 @@ function Products() {
           <span className="visually-hidden">Next</span>
         </button>
       </div>
-      <div className="box d-none d-md-block">
+      <div className="box d-none d-md-block mt-5">
         <div className="row position-relative">
           <Image
             src="/icon/Vector.png"
@@ -163,6 +166,7 @@ function Products() {
           </div>
         </div>
       </div>
+      <Modal />
     </div>
   );
 }

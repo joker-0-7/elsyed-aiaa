@@ -65,7 +65,7 @@ function Product() {
                           <SwiperSlide key={index}>
                             <Image
                               // src={img}
-                              src="/image/product-image.png"
+                              src={`${process.env.NEXT_PUBLIC_API}/public/images/products/${img}`}
                               alt="product"
                               width={325}
                               height={174}
@@ -91,7 +91,7 @@ function Product() {
                           <SwiperSlide key={index}>
                             <Image
                               // src={img}
-                              src="/image/product-image.png"
+                              src={`${process.env.NEXT_PUBLIC_API}/public/images/products/${img}`}
                               alt="product"
                               width={150}
                               height={94}
@@ -128,24 +128,19 @@ function Product() {
                         className="btn btn-primary w-75 fs-5 fw-bold"
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
-                        onClick={() =>
-                          window.localStorage.setItem("product", product.price)
-                        }
+                        onClick={() => {
+                          window.localStorage.setItem("price", product.price);
+                          window.localStorage.setItem(
+                            "productName",
+                            product.name
+                          );
+                        }}
                       >
                         <span>اطلب الأن</span>
                         <span>
                           <i className="bi bi-bag me-2"></i>
                         </span>
                       </button>
-                      {/* <button
-                        className="btn btn-primary w-75 fs-5 fw-bold submit"
-                        onClick={() => setShow(!show)}
-                      >
-                        <span>اطلب الأن</span>
-                        <span>
-                          <i className="bi bi-bag me-2"></i>
-                        </span>
-                      </button> */}
                     </div>
                     <div className="col-6">
                       <div className="number d-flex">

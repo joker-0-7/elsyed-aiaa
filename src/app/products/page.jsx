@@ -4,27 +4,59 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Loader from "../utils/loader";
-import { Pagination } from "@mui/material";
+import { Pagination } from "antd";
+import Modal from "../components/product/Modal";
+import moment from "moment";
+
 function Products() {
   const [products, setProducts] = useState([]);
   const [client, setClient] = useState(false);
+  const [current, setCurrent] = useState(1);
+  const [data, setData] = useState([]);
   const getData = async () => {
     try {
       await axios
-        .get(`${process.env.NEXT_PUBLIC_API}/products`)
+        .get(`${process.env.NEXT_PUBLIC_API}/products/`)
         .then((res) => res.data)
         .then((res) => {
           setProducts([...products, ...res]);
-          console.log(res);
           setClient(true);
         });
     } catch (error) {
       console.log(error);
     }
   };
+  const onChange = (page) => {
+    setCurrent(page);
+  };
   useEffect(() => {
     getData();
   }, []);
+  useEffect(() => {
+    setClient(false);
+    try {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_API}/products/${current}`)
+        .then((res) => res.data)
+        .then((res) => {
+          setData(res);
+          setClient(true);
+        });
+    } catch (error) {
+      console.log(error);
+      setClient(true);
+    }
+  }, [current]);
+  const timeFun = (e) => {
+    const currentTime = Date.now();
+    const createdAtTime = new Date(e).getTime();
+    const millisecondsSinceCreation = currentTime - createdAtTime;
+    const daysSinceCreation = Math.floor(
+      millisecondsSinceCreation / (1000 * 60 * 60 * 24)
+    );
+    console.log(daysSinceCreation);
+    return daysSinceCreation;
+  };
   return client ? (
     <div className="products">
       <div className="container">
@@ -33,20 +65,27 @@ function Products() {
         </div>
         <div className="product-list mt-5">
           <div className="row">
-            {products &&
-              products.map((product) => {
+            {data &&
+              data.map((product) => {
                 return (
                   <div
-                    className="col-lg-4 col-sm-12"
+                    className="col-lg-4 col-sm-12 p-5"
                     key={product && product._id}
                   >
-                    <div className="box-product" style={{ height: "533px" }}>
-                      <span
-                        className="is-new rounded-3 text-light px-3"
-                        style={{ backgroundColor: "rgba(37, 102, 211, 0.84)" }}
-                      >
-                        جديد
-                      </span>
+                    <div
+                      className="box-product"
+                      style={{ height: "483px", width: "360px" }}
+                    >
+                      {timeFun(product.createdAt) < 3 && (
+                        <span
+                          className="is-new rounded-3 text-light px-3"
+                          style={{
+                            backgroundColor: "rgba(37, 102, 211, 0.84)",
+                          }}
+                        >
+                          جديد
+                        </span>
+                      )}
                       <div className="image-product">
                         <div id="carouselExample" className="carousel slide">
                           <div className="carousel-inner">
@@ -60,7 +99,7 @@ function Products() {
                                     key={img}
                                   >
                                     <Image
-                                      src="/image/product-image.png"
+                                      src={`${process.env.NEXT_PUBLIC_API}/public/images/products/${img}`}
                                       className="d-block w-100"
                                       alt="product-images"
                                       width={345}
@@ -104,12 +143,24 @@ function Products() {
                       </div>
                       <div className="buttons-box d-flex mt-5">
                         <div className="order-now">
-                          <Link
-                            href={`/products/${product && product._id}`}
+                          <button
+                            type="button"
                             className="btn btn-primary fs-5 ms-5"
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"
+                            onClick={() => {
+                              window.localStorage.setItem(
+                                "price",
+                                product.price
+                              );
+                              window.localStorage.setItem(
+                                "productName",
+                                product.name
+                              );
+                            }}
                           >
                             اطلب الأن
-                          </Link>
+                          </button>
                         </div>
                         <div className="another-btn">
                           <Link
@@ -136,11 +187,17 @@ function Products() {
                 );
               })}
           </div>
-          <div dir="ltr">
-            <Pagination count={10} variant="outlined" shape="rounded" />;
+          <div dir="text-center">
+            <Pagination
+              defaultCurrent={1}
+              current={current}
+              onChange={onChange}
+              total={Math.round((products.length / 6) * 10)}
+            />
           </div>
         </div>
       </div>
+      <Modal />
     </div>
   ) : (
     <Loader />

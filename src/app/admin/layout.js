@@ -1,16 +1,20 @@
 "use client";
 import { usePathname } from "next/navigation";
 import "./globals-admin.css";
+import Sidebar from "../components/admin/Sidebar";
+
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
   return (
     <div className="admin-page" style={{ minHeight: "100vh" }}>
       <div className="row" style={{ minHeight: "100vh" }}>
         {pathname.split("/")[2] !== "login" && (
-          <div className="col-2 admin-sidebar p-0"></div>
+          <div className="div">
+            <Sidebar />
+          </div>
         )}
 
-        <div className="col-10 admin-content p-0">{children}</div>
+        <div className="div">{children}</div>
       </div>
     </div>
   );

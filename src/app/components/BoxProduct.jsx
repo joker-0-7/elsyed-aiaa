@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
-import img from "../../../public/image/product-image.png";
+
 function BoxProduct({ product, handleDelete }) {
   return (
     <div
@@ -12,7 +13,7 @@ function BoxProduct({ product, handleDelete }) {
       }}
     >
       <Image
-        src={img}
+        src={`${process.env.NEXT_PUBLIC_API}/public/images/products/${product.image[0]}`}
         alt={product.name}
         className=" mx-auto"
         width={180}
@@ -20,7 +21,12 @@ function BoxProduct({ product, handleDelete }) {
       />
       <h1>{product.name} </h1>
       <h6 className="text-secondary">{product.description}</h6>
-      <button className="btn btn-primary w-50 fw-bold">تعديل</button>
+      <Link
+        className="btn btn-primary w-50 fw-bold"
+        href={`/admin/products/update-product/${product._id}`}
+      >
+        تعديل
+      </Link>
       <div
         className="dele-icon position-absolute d-flex justify-content-center align-items-center"
         style={{
@@ -34,7 +40,7 @@ function BoxProduct({ product, handleDelete }) {
         }}
         onClick={() => handleDelete(product._id)}
       >
-        <i class="bi bi-trash fs-4 text-danger"></i>
+        <i className="bi bi-trash fs-4 text-danger"></i>
       </div>
     </div>
   );

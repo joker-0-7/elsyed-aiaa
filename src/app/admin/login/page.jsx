@@ -21,6 +21,7 @@ function Page() {
       );
       setClient(true);
       router.push("/admin/products");
+      window.localStorage.setItem("authAdminPanel", true);
     } catch (error) {
       console.log(error);
       setClient(true);

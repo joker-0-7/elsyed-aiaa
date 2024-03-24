@@ -1,16 +1,17 @@
 "use client";
-import React, { useState } from "react";
-import { data } from "./data";
+import React, { useEffect, useState } from "react";
+import { data } from "../../add-product/data";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import axios from "axios";
+import { useParams } from "next/navigation";
 function Page() {
+  const params = useParams();
   const [images, setImages] = useState([]);
   const [disabled, setDisable] = useState(false);
-
   const [imageURLS, setImageURLS] = useState([]);
   const [product, setProduct] = useState({
     name: "",
@@ -19,6 +20,19 @@ function Page() {
     discount: "",
     count: "",
   });
+  const getData = async () => {
+    try {
+      const data = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/product/${params.product}`
+      );
+      setProduct(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
@@ -44,8 +58,8 @@ function Page() {
     formdata.append("discount", product.discount);
     formdata.append("count", product.count);
     try {
-      const data = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/product/add`,
+      const data = await axios.put(
+        `${process.env.NEXT_PUBLIC_API}/product/update/${params.product}`,
         formdata
       );
       setDisable(false);
@@ -80,6 +94,7 @@ function Page() {
                         <input
                           type={data.inpType}
                           required
+                          value={product[data.name]}
                           className="form-control"
                           placeholder={data.placeHolder}
                           id={data.name}
@@ -98,6 +113,7 @@ function Page() {
                 </label>
                 <textarea
                   placeholder="وصف المنتج"
+                  value={product.description}
                   className="form-control"
                   rows="7"
                   id="description"

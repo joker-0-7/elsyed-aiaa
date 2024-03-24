@@ -1,10 +1,43 @@
 "use client";
+import axios from "axios";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
-function page() {
-  const handleSubmit = (e) => {
+function Page() {
+  const [data, setData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
+    interested: "",
+    placeType: "",
+    country: "",
+  });
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(data);
+    try {
+      const rus = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/forms/contact`,
+        data
+      );
+      toast.success("تم ارسال البيانات بنجاح");
+      setData({
+        name: "",
+        phone: "",
+        placeType: "",
+        country: "",
+        email: "",
+        message: "",
+        interested: "",
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div className="contact-us" style={{ minHeight: "100vh" }}>
@@ -33,6 +66,9 @@ function page() {
                       </label>
                       <input
                         type="text"
+                        value={data.name}
+                        onChange={handleChange}
+                        name="name"
                         required
                         className="form-control"
                         id="name"
@@ -48,6 +84,9 @@ function page() {
                       </label>
                       <input
                         type="email"
+                        value={data.email}
+                        onChange={handleChange}
+                        name="email"
                         required
                         className="form-control"
                         id="email"
@@ -63,6 +102,9 @@ function page() {
                       </label>
                       <input
                         type="text"
+                        value={data.phone}
+                        onChange={handleChange}
+                        name="phone"
                         required
                         className="form-control"
                         id="phone"
@@ -78,10 +120,13 @@ function page() {
                       </label>
                       <input
                         type="text"
+                        onChange={handleChange}
+                        value={data.interested}
                         required
                         className="form-control"
                         id="interestet"
                         aria-describedby="emailHelp"
+                        name="interested"
                       />
                     </div>
                     <div className="col-12">
@@ -92,7 +137,10 @@ function page() {
                         اترك لنا رساله
                       </label>
                       <textarea
+                        value={data.message}
+                        name="message"
                         placeholder="اخبرنا كيف يمكننا مساعدتك"
+                        onChange={handleChange}
                         className="form-control"
                         rows="7"
                         required
@@ -190,4 +238,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

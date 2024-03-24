@@ -18,6 +18,22 @@
 .modal-backdrop {
   z-index: 9 !important;
 }
+nav li a {
+  position: relative;
+}
+nav li a.active {
+  color: var(--blueColor);
+}
+nav li a.active::after {
+  content: "";
+  position: absolute;
+  width: 90%;
+  left: 50%;
+  transform: translatex(-50%);
+  height: 2px;
+  bottom: -5px;
+  background-color: var(--blueColor);
+}
 .text-blue {
   color: #1472b2;
 }
@@ -69,7 +85,9 @@ nav {
   left: 0;
   transform: translateY(-50%) rotate(-2deg);
 }
-
+.MuiListItemText-root {
+  flex: none !important;
+}
 .product .box {
   background-color: rgba(168, 200, 253, 0.6);
   border-radius: 43px;
