@@ -5,9 +5,11 @@ import FormModalOne from "../FormModalOne";
 import FormModalTwo, { lists } from "../FormModalTwo";
 import axios from "axios";
 import "react-step-progress/dist/index.css";
+import Congratlate from "./Congratlate";
 
 function Modal() {
   const [image, setImage] = useState(null);
+  const [close, setClose] = useState(null);
   const [data, setData] = useState({
     name: "",
     phone: "",
@@ -28,22 +30,43 @@ function Modal() {
       [e.target.name]: e.target.value,
     }));
   };
+  const copyToClipboard = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        console.log("Text copied to clipboard");
+      })
+      .catch((error) => {
+        console.error("Failed to copy text: ", error);
+      });
+  };
+  useEffect(() => {
+    const price = window.localStorage.getItem("price");
+    const productName = window.localStorage.getItem("productName");
+    setData((prevData) => ({
+      ...prevData,
+      price: price,
+      productName: productName,
+    }));
+    setClose(null);
+  }, []);
+  const handleCopyClick = (text) => {
+    copyToClipboard(text);
+  };
   const uploadImageToClient = (event) => {
     if (event.target.files && event.target.files[0]) {
       const selectedImage = event.target.files[0];
-      setImage(selectedImage); // تحديث الصورة
+      setImage(selectedImage);
     }
   };
 
   const handleSubmit = async () => {
     try {
-      // تحديث القيم في data
       const updatedData = {
         ...data,
         price: window.localStorage.getItem("price"),
         productName: window.localStorage.getItem("productName"),
       };
-      // تحديث data باستخدام setData
       const formdata = new FormData();
       formdata.append("image", image);
       formdata.append("name", data.name);
@@ -55,14 +78,17 @@ function Modal() {
       formdata.append("zip", data.zip);
       formdata.append("payment", data.payment);
       formdata.append("accountName", data.accountName);
-      formdata.append("price", data.price);
-      formdata.append("productName", data.productName);
+      formdata.append("price", window.localStorage.getItem("price"));
+      formdata.append(
+        "productName",
+        window.localStorage.getItem("productName")
+      );
       setData(updatedData);
-      // إرسال الطلب باستخدام updatedData بدلاً من data
       const rus = await axios.post(
         `${process.env.NEXT_PUBLIC_API}/forms/payment`,
         formdata
       );
+      setClose(true);
     } catch (error) {
       console.log(error);
     }
@@ -78,18 +104,38 @@ function Modal() {
     }, []);
     return (
       <div className="row row-gap-3" dir="rtl">
-        <div className="col-lg-6 col-sm-12">
-          <label htmlFor="info" className="form-label fs-6">
-            {labelOne}
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            readOnly
-            disabled
-            value={inputOne}
-          />
-        </div>
+        {inputOne.map((inp, i) => {
+          return (
+            <div className="col-lg-6 col-sm-12" key={i}>
+              <label htmlFor="info" className="form-label fs-6">
+                {labelOne}
+              </label>
+              <div className=" position-relative">
+                <input
+                  type="text"
+                  className="form-control"
+                  readOnly
+                  disabled
+                  value={inp}
+                />
+                <span
+                  onClick={() => {
+                    handleCopyClick(inp);
+                  }}
+                  className="position-absolute"
+                  style={{
+                    left: "5px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <i className="bi bi-copy text-primary"></i>
+                </span>
+              </div>
+            </div>
+          );
+        })}
         <div className="col-lg-6 col-sm-12">
           <label htmlFor="price" className="form-label fs-6">
             السعر النهائي للمنتج
@@ -136,11 +182,16 @@ function Modal() {
               height: "200px",
             }}
           >
-            <input type="file" accept="image/*" id="file" hidden />
+            <input
+              type="file"
+              accept="image/*"
+              id="file"
+              hidden
+              onChange={uploadImageToClient}
+            />
             <div className="info d-flex justify-content-center align-items-center flex-column">
               <span
                 className="rounded-5 d-flex justify-content-center align-items-center"
-                onChange={uploadImageToClient}
                 style={{
                   width: "82px",
                   height: "42px",
@@ -165,7 +216,7 @@ function Modal() {
         return (
           <RusaltForm
             handleChange={handleChange}
-            inputOne="EG460002023102310383000002410"
+            inputOne={["2140001000015374", "2140001000006781"]}
             labelOne="رقم الحساب البنكي"
             labelTwo="رقم حسابك"
           />
@@ -174,7 +225,7 @@ function Modal() {
         return (
           <RusaltForm
             handleChange={handleChange}
-            inputOne="EG460002023102310383000002410"
+            inputOne={["01060006306"]}
             labelOne="فودافون كاش"
             labelTwo="رقم قودافون كاش الخاص بك"
           />
@@ -182,7 +233,7 @@ function Modal() {
       case lists[2].name:
         return (
           <RusaltForm
-            inputOne="EG460002023102310383000002410"
+            inputOne={["870124529"]}
             labelOne="رقم المحفظة"
             labelTwo="رقم المحفظة الخاص بك"
             handleChange={handleChange}
@@ -191,7 +242,7 @@ function Modal() {
       case lists[3].name:
         return (
           <RusaltForm
-            inputOne="EG460002023102310383000002410"
+            inputOne={["alsayedalaa632@gmail.com"]}
             labelOne="حسال البيبال"
             labelTwo="حساب البايبال الخاص بك"
             handleChange={handleChange}
@@ -199,72 +250,77 @@ function Modal() {
         );
     }
   };
-  return (
-    <div
-      dir="ltr"
-      className="modal fade"
-      id="exampleModal"
-      tabIndex={-1}
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div className="modal-dialog">
-        <div
-          className="modal-content"
-          style={{
-            backgroundColor: "#F5F5F5",
-            width: "750px",
-            height: "auto",
-          }}
-        >
-          <div className="modal-header w-100 border-bottom-0">
-            <h1 className="modal-title fs-5 w-100" id="exampleModalLabel">
-              <StepProgressBar
-                labelClass="fs-6"
-                previousBtnName="رجوع"
-                nextBtnName="التالي"
-                submitBtnName="ارسال"
-                primaryBtnClass="btn btn-primary w-75"
-                contentClass="mt-5"
-                secondaryBtnClass="btn btn-outline-primary w-25"
-                subtitleClass="sub-title-class"
-                startingStep={0}
-                onSubmit={handleSubmit}
-                steps={[
-                  {
-                    label: "عنوان الشحن",
-                    name: "step 1",
-                    content: (
-                      <FormModalOne
-                        handleChange={handleChange}
-                        data={data}
-                        setData={setData}
-                      />
-                    ),
-                  },
-                  {
-                    label: "وسائل الدفع",
-                    name: "step 2",
-                    subtitle: "جميع طرق الدفع يدويه",
-                    content: (
-                      <FormModalTwo
-                        changeMethod={changeMethod}
-                        handleChange={handleChange}
-                      />
-                    ),
-                  },
-                  {
-                    label: "استكمال الدفع",
-                    name: "step 3",
-                    content: <FormTree handleChange={handleChange} />,
-                  },
-                ]}
-              />
-            </h1>
+  return close === null ? (
+    <div className="pyment">
+      <div
+        dir="ltr"
+        className="modal fade"
+        id="exampleModal"
+        tabIndex={-1}
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div
+            className="modal-content"
+            style={{
+              backgroundColor: "#F5F5F5",
+              width: "750px",
+              height: "auto",
+            }}
+          >
+            <div className="modal-header w-100 border-bottom-0">
+              <h1 className="modal-title fs-5 w-100" id="exampleModalLabel">
+                <StepProgressBar
+                  labelClass="fs-6"
+                  previousBtnName="رجوع"
+                  nextBtnName="التالي"
+                  submitBtnName="ارسال"
+                  primaryBtnClass="btn btn-primary w-50"
+                  contentClass="mt-5"
+                  secondaryBtnClass="btn btn-outline-primary w-25"
+                  subtitleClass="sub-title-class"
+                  startingStep={0}
+                  onSubmit={handleSubmit}
+                  steps={[
+                    {
+                      label: "عنوان الشحن",
+                      name: "step 1",
+                      content: (
+                        <FormModalOne
+                          handleChange={handleChange}
+                          data={data}
+                          setData={setData}
+                        />
+                      ),
+                    },
+                    {
+                      label: "وسائل الدفع",
+                      name: "step 2",
+                      subtitle: "جميع طرق الدفع يدويه",
+                      content: (
+                        <FormModalTwo
+                          changeMethod={changeMethod}
+                          handleChange={handleChange}
+                        />
+                      ),
+                    },
+                    {
+                      label: "استكمال الدفع",
+                      name: "step 3",
+
+                      content: <FormTree handleChange={handleChange} />,
+                    },
+                  ]}
+                />
+              </h1>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  ) : (
+    close === true && <Congratlate close={close} setClose={setClose} />
   );
 }
 

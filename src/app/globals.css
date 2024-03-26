@@ -59,6 +59,18 @@ a {
   color: inherit;
   text-decoration: none;
 }
+.slick-slide {
+  transition: height 0.5s;
+}
+
+.slick-center {
+  height: 200px;
+}
+
+.slick-slide:not(.slick-center) {
+  height: 150px;
+}
+
 nav {
   background-color: transparent;
 }
@@ -112,8 +124,8 @@ button.nav-link {
   background-color: var(--lightColor);
   border-radius: 25px;
   padding: 15px 30px;
-  height: 573px;
-  width: 472px;
+  min-height: 483px;
+  width: 360px;
 }
 .product-page .product-container {
   background-color: var(--lightColor);
@@ -257,6 +269,15 @@ div.product-container.py-3.px-5
   font-size: 10px;
 }
 @media (max-width: 768px) {
+  .pyment .modal.fade {
+    width: auto !important;
+  }
+  .pyment .modal.fade .modal-dialog {
+    width: auto !important;
+  }
+  .pyment .modal.fade .modal-content {
+    width: 95vw !important;
+  }
   .box .row .data {
     height: 300px !important;
   }
@@ -273,7 +294,8 @@ div.product-container.py-3.px-5
   .products .box-product {
     border-radius: 25px;
     padding: 12px 25px;
-    height: 473px;
+    min-height: 350px !important;
+    max-height: 450px !important;
     width: 100%;
     margin: 0 auto;
   }

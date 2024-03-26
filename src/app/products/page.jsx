@@ -54,7 +54,6 @@ function Products() {
     const daysSinceCreation = Math.floor(
       millisecondsSinceCreation / (1000 * 60 * 60 * 24)
     );
-    console.log(daysSinceCreation);
     return daysSinceCreation;
   };
   return client ? (
@@ -72,18 +71,27 @@ function Products() {
                     className="col-lg-4 col-sm-12 p-5"
                     key={product && product._id}
                   >
-                    <div
-                      className="box-product"
-                      style={{ height: "483px", width: "360px" }}
-                    >
+                    <div className="box-product">
                       {timeFun(product.createdAt) < 3 && (
                         <span
-                          className="is-new rounded-3 text-light px-3"
+                          className="is-new rounded-3 text-light px-3 d-block p-1 mb-2"
                           style={{
                             backgroundColor: "rgba(37, 102, 211, 0.84)",
+                            width: "66px",
                           }}
                         >
                           جديد
+                        </span>
+                      )}
+                      {product.count == 0 && (
+                        <span
+                          className="is-new rounded-3 text-light px-3 d-block p-1 mb-2 text-center"
+                          style={{
+                            backgroundColor: "#DE3932",
+                            width: "66px",
+                          }}
+                        >
+                          منتهي
                         </span>
                       )}
                       <div className="image-product">
@@ -145,9 +153,15 @@ function Products() {
                         <div className="order-now">
                           <button
                             type="button"
+                            style={{
+                              cursor: product.count === 0 ? "auto" : "pointer",
+                            }}
                             className="btn btn-primary fs-5 ms-5"
-                            data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"
+                            data-bs-toggle={product.count > 0 ? "modal" : ""}
+                            disabled={product.count > 0 ? false : true}
+                            data-bs-target={
+                              product.count > 0 ? "#exampleModal" : ""
+                            }
                             onClick={() => {
                               window.localStorage.setItem(
                                 "price",
@@ -187,7 +201,7 @@ function Products() {
                 );
               })}
           </div>
-          <div dir="text-center">
+          <div dir="ltr" className="text-center">
             <Pagination
               defaultCurrent={1}
               current={current}

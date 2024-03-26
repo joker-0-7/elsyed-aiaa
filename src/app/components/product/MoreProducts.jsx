@@ -3,6 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import Modal from "./Modal";
 
 function MoreProducts() {
   const [products, setProducts] = useState([]);
@@ -20,8 +21,16 @@ function MoreProducts() {
   useEffect(() => {
     fetchData();
   }, []);
+  const timeFun = (e) => {
+    const currentTime = Date.now();
+    const createdAtTime = new Date(e).getTime();
+    const millisecondsSinceCreation = currentTime - createdAtTime;
+    const daysSinceCreation = Math.floor(
+      millisecondsSinceCreation / (1000 * 60 * 60 * 24)
+    );
+    return daysSinceCreation;
+  };
 
-  // اختيار 3 منتجات بشكل عشوائي
   const getRandomProducts = () => {
     if (products.length > 3) {
       const randomProducts = [];
@@ -56,12 +65,28 @@ function MoreProducts() {
                 className="box-product"
                 style={{ height: "483px", width: "360px" }}
               >
-                <span
-                  className="is-new rounded-3 text-light px-3"
-                  style={{ backgroundColor: "rgba(37, 102, 211, 0.84)" }}
-                >
-                  جديد
-                </span>
+                {timeFun(product.createdAt) < 3 && (
+                  <span
+                    className="is-new rounded-3 text-light px-3 d-block p-1 mb-2"
+                    style={{
+                      backgroundColor: "rgba(37, 102, 211, 0.84)",
+                      width: "66px",
+                    }}
+                  >
+                    جديد
+                  </span>
+                )}
+                {product.count == 0 && (
+                  <span
+                    className="is-new rounded-3 text-light px-3 d-block p-1 mb-2 text-center"
+                    style={{
+                      backgroundColor: "#DE3932",
+                      width: "66px",
+                    }}
+                  >
+                    منتهي
+                  </span>
+                )}
                 <div className="image-product">
                   <div id={product.createdAt} className="carousel slide">
                     <div className="carousel-inner">
@@ -119,12 +144,25 @@ function MoreProducts() {
                 </div>
                 <div className="buttons-box d-flex mt-5">
                   <div className="order-now">
-                    <Link
-                      href={`/products/${product && product._id}`}
+                    <button
+                      type="button"
+                      style={{
+                        cursor: product.count === 0 ? "auto" : "pointer",
+                      }}
                       className="btn btn-primary fs-5 ms-5"
+                      data-bs-toggle={product.count > 0 ? "modal" : ""}
+                      disabled={product.count > 0 ? false : true}
+                      data-bs-target={product.count > 0 ? "#exampleModal" : ""}
+                      onClick={() => {
+                        window.localStorage.setItem("price", product.price);
+                        window.localStorage.setItem(
+                          "productName",
+                          product.name
+                        );
+                      }}
                     >
                       اطلب الأن
-                    </Link>
+                    </button>
                   </div>
                   <div className="another-btn">
                     <Link
@@ -151,6 +189,7 @@ function MoreProducts() {
           );
         })}
       </div>
+      <Modal />
     </div>
   );
 }

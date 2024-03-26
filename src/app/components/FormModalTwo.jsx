@@ -8,7 +8,7 @@ export const lists = [
   { id: 4, name: "Paypal", icon: "paypal" },
 ];
 function FormModalTwo({ changeMethod, handleChange }) {
-  const [selectedOption, setSelectedOption] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
   return (
     <div className="ul w-100 mt-5">
       <ul className="list-unstyled d-flex flex-column justify-content-around align-items-center w-100">
@@ -37,7 +37,6 @@ function FormModalTwo({ changeMethod, handleChange }) {
                     setSelectedOption(i);
                     changeMethod(e.target.value);
                   }}
-                  checked={selectedOption === i}
                 />
                 <div className="title d-flex align-items-center">
                   <div
@@ -45,7 +44,7 @@ function FormModalTwo({ changeMethod, handleChange }) {
                     style={{ border: "1px solid #D6DCE5" }}
                   >
                     <Image
-                      src={`/icon/${list.icon}.png`}
+                      src={`/icon/${list.icon}.svg`}
                       width={39}
                       height={31}
                       alt={list.icon}

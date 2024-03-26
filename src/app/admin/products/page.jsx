@@ -87,6 +87,7 @@ function Page() {
               open={open}
               onOk={handleDelete}
               onCancel={hideModal}
+              okButtonProps={{ style: { backgroundColor: "#DE3932" } }}
               okText="حذف"
               cancelText="الغاء"
               style={{

@@ -1,0 +1,43 @@
+.slick-track {
+  display: flex;
+}
+.slider-container {
+  width: 80%; /* Adjust the width as needed */
+  margin: 0 auto;
+}
+
+.slider-item {
+  height: 300px; /* Set the height of the slider */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+}
+.slider-item.middle {
+  background-image: url("/image/image-1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.slider-item.right {
+  background-image: url("/image/image-2.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.left,
+.right,
+.middle {
+  opacity: 0.5; /* Adjust opacity for the side sections */
+}
+.slick-slide.slick-active.slick-center.slick-current {
+  margin: 0 15px;
+}
+.slick-slide.slick-active.slick-center.slick-current > div > div {
+  height: 400px; /* Adjust the height to make it slightly higher */
+  z-index: 1; /* Bring to the front */
+  opacity: 1;
+  width: 90%;
+  transition: 0.6s;
+}

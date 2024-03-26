@@ -1,36 +1,44 @@
 "use client";
 import React from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./slider.css";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
+const VideoPlayer = () => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    centerMode: true,
+    // centerPadding: "50px",
+  };
 
-import { Pagination } from "swiper/modules";
-
-export default function VideoPlayer() {
   return (
-    <>
-      <Swiper
-        slidesPerView={3}
-        spaceBetween={30}
-        pagination={{
-          clickable: true,
-        }}
-        modules={[Pagination]}
-        className="mySwiper"
-      >
-        <div className="row row-gap-5">
-          <div className="col-lg-5 col-sm-12">
-            <SwiperSlide>Slide 1</SwiperSlide>
-          </div>
-          <div className="col-lg-5 col-sm-12">
-            <SwiperSlide>Slide 2</SwiperSlide>
-          </div>
-          <div className="col-lg-5 col-sm-12">
-            <SwiperSlide>Slide 3</SwiperSlide>
-          </div>
+    <div className="slider-container">
+      <Slider {...settings}>
+        {/* Left section */}
+        <div className="slider-item left bg-dark">
+          <video
+            style={{ width: "90%", height: "100%" }}
+            className="mx-auto d-block"
+            controls
+            autoPlay
+            muted
+          >
+            <source src="/video/video.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
-      </Swiper>
-    </>
+        {/* Middle section */}
+        <div className="slider-item middle"></div>
+        {/* Right section */}
+        <div className="slider-item right"></div>
+      </Slider>
+    </div>
   );
-}
+};
+
+export default VideoPlayer;

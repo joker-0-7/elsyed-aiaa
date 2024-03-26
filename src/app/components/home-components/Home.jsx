@@ -26,11 +26,6 @@ function HomeSection() {
       <div className="btns">
         <div className="row text-center mx-auto justify-content-center row-gap-3">
           <div className="col-lg-2 col-sm-12">
-            <button className="btn btn-outline-primary">
-              <span className="title fs-5">معرفة المزيد</span>
-            </button>
-          </div>
-          <div className="col-lg-2 col-sm-12">
             <button className="btn btn-primary">
               <span className="title fs-5">المقطع الدعائي</span>
               <span className="icon">

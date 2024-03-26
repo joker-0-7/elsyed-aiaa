@@ -6,6 +6,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import "moment/locale/ar";
 import Image from "next/image";
+import Link from "next/link";
 
 function Page() {
   moment.locale("ar");
@@ -47,80 +48,87 @@ function Page() {
             <h1>طلبات الدعم</h1>
           </div>
           <div className="btns">
-            <button className="btn btn-primary">اضافة منتج</button>
+            <Link
+              className="btn btn-primary"
+              href="/admin/products/add-product"
+            >
+              اضافة منتج
+            </Link>
           </div>
         </div>
         {data && data.length > 0 ? (
           <div className="content">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">الاسم</th>
-                  <th scope="col">البريد الالكتروني</th>
-                  <th scope="col">رقم الهاتف</th>
-                  <th scope="col">تاريخ الطلب</th>
-                  <th scope="col">استفسار بخصوص</th>
-                  <th scope="col">رسالة العميل</th>
-                  <th scope="col">حذف الطلب</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((data) => {
-                  return (
-                    <tr key={data._id}>
-                      <th scope="row">{data.name}</th>
-                      <td>{data.email}</td>
-                      <td>{data.phone}</td>
-                      <td>
-                        <span
-                          className="d-block w-75 px-2 py-1 text-secondary mx-auto text-center rounded-2"
-                          style={{ backgroundColor: "#FAFAFA" }}
-                        >
-                          <i className="bi bi-clock ms-2"></i>
-                          {moment
-                            .utc(data.createdAt)
-                            .local()
-                            .startOf("seconds")
-                            .fromNow()}
-                        </span>
-                      </td>
-                      <td>{data.placeType || data.interested}</td>
-                      <td>
-                        <span
-                          className="d-block w-75 px-2 py-1 text-secondary mx-auto text-center rounded-2"
-                          data-bs-toggle="modal"
-                          data-bs-target="#imageOrder"
-                          style={{
-                            backgroundColor: "#FAFAFA",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            setImage(data.message);
-                          }}
-                        >
-                          <i className="bi bi-eye ms-1"></i>
-                          عرض
-                        </span>
-                      </td>
-                      <td>
-                        <span
-                          className="btn me-2"
-                          onClick={() => {
-                            handleDelete(data._id);
-                          }}
-                          style={{
-                            backgroundColor: "rgba(255, 103, 103, 0.38)",
-                            color: "#D32525",
-                          }}
-                        >
-                          حذف
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <div className="info" style={{ overflow: "auto" }}>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">الاسم</th>
+                    <th scope="col">البريد الالكتروني</th>
+                    <th scope="col">رقم الهاتف</th>
+                    <th scope="col">تاريخ الطلب</th>
+                    <th scope="col">استفسار بخصوص</th>
+                    <th scope="col">رسالة العميل</th>
+                    <th scope="col">حذف الطلب</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((data) => {
+                    return (
+                      <tr key={data._id}>
+                        <th scope="row">{data.name}</th>
+                        <td>{data.email}</td>
+                        <td>{data.phone}</td>
+                        <td>
+                          <span
+                            className="d-block w-75 px-2 py-1 text-secondary mx-auto text-center rounded-2"
+                            style={{ backgroundColor: "#FAFAFA" }}
+                          >
+                            <i className="bi bi-clock ms-2"></i>
+                            {moment
+                              .utc(data.createdAt)
+                              .local()
+                              .startOf("seconds")
+                              .fromNow()}
+                          </span>
+                        </td>
+                        <td>{data.placeType || data.interested}</td>
+                        <td>
+                          <span
+                            className="d-block w-75 px-2 py-1 text-secondary mx-auto text-center rounded-2"
+                            data-bs-toggle="modal"
+                            data-bs-target="#imageOrder"
+                            style={{
+                              backgroundColor: "#FAFAFA",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              setImage(data.message);
+                            }}
+                          >
+                            <i className="bi bi-eye ms-1"></i>
+                            عرض
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            className="btn me-2"
+                            onClick={() => {
+                              handleDelete(data._id);
+                            }}
+                            style={{
+                              backgroundColor: "rgba(255, 103, 103, 0.38)",
+                              color: "#D32525",
+                            }}
+                          >
+                            حذف
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
             <div className="pagination" dir="ltr">
               <div
                 className="btn-group"

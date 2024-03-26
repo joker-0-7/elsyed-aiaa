@@ -6,3 +6,9 @@ html,
 body {
   background-color: #f8f9fa !important;
 }
+
+.admin-active {
+  background-color: #ffffff;
+  display: block;
+  border-radius: 8px;
+}

@@ -6,6 +6,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import "moment/locale/ar";
 import Image from "next/image";
+import Link from "next/link";
 
 function Page() {
   moment.locale("ar");
@@ -25,7 +26,8 @@ function Page() {
   const acceptFun = async (e) => {
     try {
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API}/forms/payment/accept/${e}`
+        `${process.env.NEXT_PUBLIC_API}/forms/payment/accept/${e._id}`,
+        e
       );
       getData();
     } catch (err) {
@@ -53,132 +55,139 @@ function Page() {
             <h1>الطلبات</h1>
           </div>
           <div className="btns">
-            <button className="btn btn-primary">اضافة منتج</button>
+            <Link
+              className="btn btn-primary"
+              href="/admin/products/add-product"
+            >
+              اضافة منتج
+            </Link>
           </div>
         </div>
         {data && data.length > 0 ? (
           <div className="content">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">رقم الطلب</th>
-                  <th scope="col">المنتج</th>
-                  <th scope="col">اجمالي التكلفة</th>
-                  <th scope="col">رقم الهاتف</th>
-                  <th scope="col">العميل</th>
-                  <th scope="col">تاريخ الطلب</th>
-                  <th scope="col">طريقة الدفع</th>
-                  <th scope="col">تأكيد الدفع</th>
-                  <th scope="col">حالة الطلب</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((data) => {
-                  return (
-                    <tr key={data._id}>
-                      <th scope="row">{data._id}</th>
-                      <td>{data.productName}</td>
-                      <td>
-                        <span
-                          style={{
-                            backgroundColor: "rgba(229, 250, 234, 1)",
-                            color: "#22C55E",
-                          }}
-                          className="px-3 py-1 mx-auto fw-bold rounded-2 w-50 d-block text-center"
-                        >
-                          {data.price}
-                        </span>
-                      </td>
-                      <td>{data.phone}</td>
-                      <td>{data.name}</td>
-                      <td>
-                        <span
-                          className="d-block w-100 px-2 py-1 text-secondary mx-auto text-center rounded-2"
-                          style={{ backgroundColor: "#FAFAFA" }}
-                        >
-                          <i className="bi bi-clock ms-2"></i>
-                          {moment
-                            .utc(data.createdAt)
-                            .local()
-                            .startOf("seconds")
-                            .fromNow()}
-                        </span>
-                      </td>
-                      <td>{data.payment}</td>
-                      <td>
-                        <span
-                          className="d-block w-75 px-2 py-1 text-secondary mx-auto text-center rounded-2"
-                          data-bs-toggle="modal"
-                          data-bs-target="#imageOrder"
-                          style={{
-                            backgroundColor: "#FAFAFA",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            setImage(data.image);
-                          }}
-                        >
-                          <i className="bi bi-eye ms-1"></i>
-                          عرض
-                        </span>
-                      </td>
-                      <td>
-                        {data.status == null ? (
-                          <>
+            <div className="info" style={{ overflow: "auto" }}>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">رقم الطلب</th>
+                    <th scope="col">المنتج</th>
+                    <th scope="col">اجمالي التكلفة</th>
+                    <th scope="col">رقم الهاتف</th>
+                    <th scope="col">العميل</th>
+                    <th scope="col">تاريخ الطلب</th>
+                    <th scope="col">طريقة الدفع</th>
+                    <th scope="col">تأكيد الدفع</th>
+                    <th scope="col">حالة الطلب</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((data) => {
+                    return (
+                      <tr key={data._id}>
+                        <th scope="row">{data._id}</th>
+                        <td>{data.productName}</td>
+                        <td>
+                          <span
+                            style={{
+                              backgroundColor: "rgba(229, 250, 234, 1)",
+                              color: "#22C55E",
+                            }}
+                            className="px-3 py-1 mx-auto fw-bold rounded-2 d-block text-center "
+                          >
+                            {data.price}
+                          </span>
+                        </td>
+                        <td>{data.phone}</td>
+                        <td>{data.name}</td>
+                        <td>
+                          <span
+                            className="d-block w-100 px-2 py-1 text-secondary mx-auto text-center rounded-2"
+                            style={{ backgroundColor: "#FAFAFA" }}
+                          >
+                            <i className="bi bi-clock ms-2"></i>
+                            {moment
+                              .utc(data.createdAt)
+                              .local()
+                              .startOf("seconds")
+                              .fromNow()}
+                          </span>
+                        </td>
+                        <td>{data.payment}</td>
+                        <td>
+                          <span
+                            className="d-block w-75 px-2 py-1 text-secondary mx-auto text-center rounded-2"
+                            data-bs-toggle="modal"
+                            data-bs-target="#imageOrder"
+                            style={{
+                              backgroundColor: "#FAFAFA",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              setImage(data.image);
+                            }}
+                          >
+                            <i className="bi bi-eye ms-1"></i>
+                            عرض
+                          </span>
+                        </td>
+                        <td>
+                          {data.status == null ? (
+                            <>
+                              <span
+                                onClick={() => {
+                                  acceptFun(data);
+                                }}
+                                className="btn"
+                                style={{
+                                  backgroundColor: "rgba(229, 250, 234, 1)",
+                                  color: "#22C55E",
+                                }}
+                              >
+                                موافقة
+                              </span>
+                              <span
+                                className="btn me-2"
+                                onClick={() => {
+                                  adjFun(data._id);
+                                }}
+                                style={{
+                                  backgroundColor: "rgba(255, 103, 103, 0.38)",
+                                  color: "#D32525",
+                                }}
+                              >
+                                رفض
+                              </span>
+                            </>
+                          ) : data.status ? (
                             <span
-                              onClick={() => {
-                                acceptFun(data._id);
-                              }}
-                              className="btn"
+                              className="btn d-flex align-items-center w-75 justify-content-center"
                               style={{
                                 backgroundColor: "rgba(229, 250, 234, 1)",
                                 color: "#22C55E",
                               }}
                             >
-                              موافقة
+                              <i className="bi bi-check-circle-fill text-success ms-2"></i>
+                              نشط
                             </span>
+                          ) : (
                             <span
-                              className="btn me-2"
-                              onClick={() => {
-                                adjFun(data._id);
-                              }}
+                              className="btn me-2 d-flex align-items-center w-75 justify-content-center"
                               style={{
                                 backgroundColor: "rgba(255, 103, 103, 0.38)",
                                 color: "#D32525",
                               }}
                             >
-                              رفض
+                              <i className="bi bi-x-circle-fill text-danger ms-2"></i>
+                              ملغي
                             </span>
-                          </>
-                        ) : data.status ? (
-                          <span
-                            className="btn d-flex align-items-center w-75 justify-content-center"
-                            style={{
-                              backgroundColor: "rgba(229, 250, 234, 1)",
-                              color: "#22C55E",
-                            }}
-                          >
-                            <i className="bi bi-check-circle-fill text-success ms-2"></i>
-                            نشط
-                          </span>
-                        ) : (
-                          <span
-                            className="btn me-2 d-flex align-items-center w-75 justify-content-center"
-                            style={{
-                              backgroundColor: "rgba(255, 103, 103, 0.38)",
-                              color: "#D32525",
-                            }}
-                          >
-                            <i className="bi bi-x-circle-fill text-danger ms-2"></i>
-                            ملغي
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
             <div className="pagination" dir="ltr">
               <div
                 className="btn-group"
@@ -223,7 +232,12 @@ export const Modal = ({ data }) => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-body">
-              <Image src={data} alt="image" />
+              <Image
+                src={`${process.env.NEXT_PUBLIC_API}/public/images/orders/${data}`}
+                alt="image"
+                width={450}
+                height={300}
+              />
             </div>
           </div>
         </div>

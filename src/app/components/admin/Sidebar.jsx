@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     background: "#F5F5F5",
     color: "#09090A",
     height: "100%",
+    padding: "0 10px",
   },
   avatar: {
     margin: "0.5rem auto",
@@ -41,20 +42,24 @@ const listItems = [
     listIcon: <i className="bi bi-bar-chart fs-5"></i>,
     listText: "المنتجات",
     link: "/admin/products",
+    name: "products",
   },
   {
     listIcon: <i className="bi bi-view-list fs-5"></i>,
     listText: "الطلبات",
     link: "/admin/orders",
+    name: "orders",
   },
   {
     listIcon: <i className="bi bi-person-gear fs-5"></i>,
     listText: "طلبات الدعم",
     link: "/admin/order-support",
+    name: "order-support",
   },
 ];
 export default function App() {
   const router = useRouter();
+  const pathname = usePathname();
   const logOut = () => {
     window.localStorage.removeItem("authAdminPanel");
     router.push("/admin/login");
@@ -64,6 +69,7 @@ export default function App() {
 
   const toggleSlider = () => {
     setOpen(!open);
+    console.log(pathname.split("/")[2]);
   };
 
   const sideList = () => (
@@ -76,12 +82,16 @@ export default function App() {
         />
       </Box>
       <Box>
-        <div className="search px-2">
+        <div className="search px-2 position-relative">
           <input
             type="text"
             placeholder="بحث ... "
             className="form-control pe-5"
           />
+          <i
+            className="bi bi-search position-absolute"
+            style={{ right: "35px", top: "50%", transform: "translateY(-44%)" }}
+          ></i>
         </div>
       </Box>
       <Divider />
@@ -98,7 +108,9 @@ export default function App() {
             <Link
               key={index}
               href={listItem.link}
-              className="text-decoration-none"
+              className={`text-decoration-none ${
+                pathname.split("/")[2] == listItem.name && "admin-active"
+              }`}
             >
               <ListItem className={classes.listItem} button>
                 <ListItemIcon className={classes.listItem}>

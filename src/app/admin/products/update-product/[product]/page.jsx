@@ -7,8 +7,9 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 function Page() {
+  const router = useRouter();
   const params = useParams();
   const [images, setImages] = useState([]);
   const [disabled, setDisable] = useState(false);
@@ -63,6 +64,7 @@ function Page() {
         formdata
       );
       setDisable(false);
+      router.push("/admin/products");
     } catch (error) {
       console.log(error);
       setDisable(false);
