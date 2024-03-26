@@ -6,12 +6,20 @@ import Nav from "./components/home-components/Nav";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Footer from "./components/home-components/Footer";
 import { usePathname } from "next/navigation";
-import { ToastContainer } from "react-toastify";
+import Head from "next/head"; // استيراد Head من next/head
+import { useEffect } from "react";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
+  useEffect(() => {
+    document.title = "مؤسسة السيد علاء";
+  }, [pathname]);
+
   return (
     <html lang="en">
+      <Head>
+        <title>مؤسسة السيد علاء</title>
+      </Head>
       <body
         className={`position-relative ${
           pathname.split("/")[1] === "admin" ? "admin" : "client"
@@ -34,19 +42,6 @@ export default function RootLayout({ children }) {
             }}
           ></div>
         )}
-        {/* <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          limit={2}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick={false}
-          rtl
-          pauseOnFocusLoss={false}
-          draggable={false}
-          pauseOnHover={false}
-          theme="light"
-        /> */}
         <div
           style={{ zIndex: 99, minHeight: "100vh" }}
           className="position-relative"
