@@ -133,7 +133,10 @@ button.nav-link {
   width: 100%;
   height: 60vh;
 }
-
+.description-product {
+  height: 70px;
+  overflow: hidden;
+}
 .more-products .box-product {
   background-color: var(--lightColor);
   border-radius: 25px;
