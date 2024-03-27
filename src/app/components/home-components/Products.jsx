@@ -88,9 +88,13 @@ function Products() {
                     </Link>
                     <button
                       type="button"
+                      style={{
+                        cursor: product.count === 0 ? "auto" : "pointer",
+                      }}
                       className="btn btn-primary d-flex align-items-center justify-content-around fs-5"
-                      data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
+                      data-bs-toggle={product.count > 0 ? "modal" : ""}
+                      disabled={product.count > 0 ? false : true}
+                      data-bs-target={product.count > 0 ? "#exampleModal" : ""}
                       onClick={() => {
                         window.localStorage.setItem("price", product.price);
                         window.localStorage.setItem(
