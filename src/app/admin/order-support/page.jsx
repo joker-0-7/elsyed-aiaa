@@ -47,17 +47,9 @@ function Page() {
           <div className="title">
             <h1>طلبات الدعم</h1>
           </div>
-          <div className="btns">
-            <Link
-              className="btn btn-primary"
-              href="/admin/products/add-product"
-            >
-              اضافة منتج
-            </Link>
-          </div>
         </div>
         {data && data.length > 0 ? (
-          <div className="content">
+          <div className="content text-center">
             <div className="info" style={{ overflow: "auto" }}>
               <table className="table">
                 <thead>
@@ -72,10 +64,10 @@ function Page() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((data) => {
+                  {data.map((data, i) => {
                     return (
                       <tr key={data._id}>
-                        <th scope="row">{data.name}</th>
+                        <th scope="row">{i + 1}</th>
                         <td>{data.email}</td>
                         <td>{data.phone}</td>
                         <td>
@@ -178,10 +170,10 @@ export const Modal = ({ data }) => {
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-primary"
                 data-bs-dismiss="modal"
               >
-                Close
+                اغلاق
               </button>
             </div>
           </div>

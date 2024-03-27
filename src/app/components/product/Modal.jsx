@@ -9,7 +9,7 @@ import Congratlate from "./Congratlate";
 
 function Modal() {
   const [image, setImage] = useState(null);
-  const [close, setClose] = useState(null);
+  const [step, setStep] = useState(0);
   const [data, setData] = useState({
     name: "",
     phone: "",
@@ -48,7 +48,6 @@ function Modal() {
       price: price,
       productName: productName,
     }));
-    setClose(null);
   }, []);
   const handleCopyClick = (text) => {
     copyToClipboard(text);
@@ -88,7 +87,7 @@ function Modal() {
         `${process.env.NEXT_PUBLIC_API}/forms/payment`,
         formdata
       );
-      setClose(true);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -250,7 +249,7 @@ function Modal() {
         );
     }
   };
-  return close === null ? (
+  return (
     <div className="pyment">
       <div
         dir="ltr"
@@ -277,15 +276,22 @@ function Modal() {
                   nextBtnName="التالي"
                   submitBtnName="ارسال"
                   primaryBtnClass="btn btn-primary w-50"
-                  contentClass="mt-5"
+                  contentClass="mt-5 pt-5"
                   secondaryBtnClass="btn btn-outline-primary w-25"
                   subtitleClass="sub-title-class"
-                  startingStep={0}
                   onSubmit={handleSubmit}
+                  startingStep={step}
+                  onStepChange={(stepIndex) => {
+                    console.log(stepIndex);
+                    if (stepIndex === 2) {
+                      handleSubmit();
+                    }
+                  }}
                   steps={[
                     {
                       label: "عنوان الشحن",
                       name: "step 1",
+
                       content: (
                         <FormModalOne
                           handleChange={handleChange}
@@ -308,8 +314,12 @@ function Modal() {
                     {
                       label: "استكمال الدفع",
                       name: "step 3",
-
                       content: <FormTree handleChange={handleChange} />,
+                    },
+                    {
+                      label: "تم ارسال البيانات",
+                      name: "step 4",
+                      content: <Congratlate />,
                     },
                   ]}
                 />
@@ -319,8 +329,6 @@ function Modal() {
         </div>
       </div>
     </div>
-  ) : (
-    close === true && <Congratlate close={close} setClose={setClose} />
   );
 }
 

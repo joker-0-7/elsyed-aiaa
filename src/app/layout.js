@@ -45,6 +45,7 @@ export default function RootLayout({ children }) {
         <div
           style={{ zIndex: 99, minHeight: "100vh" }}
           className="position-relative"
+          id="root"
         >
           {children}
         </div>

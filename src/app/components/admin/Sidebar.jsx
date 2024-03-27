@@ -5,7 +5,6 @@ import {
   Avatar,
   Box,
   Divider,
-  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -17,6 +16,7 @@ import {
 import { Menu } from "@material-ui/icons";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { IconButton } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
@@ -34,6 +34,11 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     color: "#09090A",
+  },
+  hideOnDesktop: {
+    [theme.breakpoints.up("md")]: {
+      display: "none",
+    },
   },
 }));
 
@@ -57,6 +62,7 @@ const listItems = [
     name: "order-support",
   },
 ];
+
 export default function App() {
   const router = useRouter();
   const pathname = usePathname();
@@ -65,7 +71,7 @@ export default function App() {
     router.push("/admin/login");
   };
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const toggleSlider = () => {
     setOpen(!open);
@@ -80,19 +86,6 @@ export default function App() {
           src="https://i.ibb.co/rx5DFbs/avatar.png"
           alt="Juaneme8"
         />
-      </Box>
-      <Box>
-        <div className="search px-2 position-relative">
-          <input
-            type="text"
-            placeholder="بحث ... "
-            className="form-control pe-5"
-          />
-          <i
-            className="bi bi-search position-absolute"
-            style={{ right: "35px", top: "50%", transform: "translateY(-44%)" }}
-          ></i>
-        </div>
       </Box>
       <Divider />
       <Box
@@ -141,7 +134,7 @@ export default function App() {
     <>
       <CssBaseline />
       <Toolbar>
-        <IconButton onClick={toggleSlider}>
+        <IconButton onClick={toggleSlider} className={classes.hideOnDesktop}>
           <Menu />
         </IconButton>
         <Drawer open={open} anchor="right" onClose={toggleSlider}>

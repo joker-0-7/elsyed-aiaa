@@ -54,17 +54,9 @@ function Page() {
           <div className="title">
             <h1>الطلبات</h1>
           </div>
-          <div className="btns">
-            <Link
-              className="btn btn-primary"
-              href="/admin/products/add-product"
-            >
-              اضافة منتج
-            </Link>
-          </div>
         </div>
         {data && data.length > 0 ? (
-          <div className="content">
+          <div className="content text-center">
             <div className="info" style={{ overflow: "auto" }}>
               <table className="table">
                 <thead>
@@ -81,10 +73,10 @@ function Page() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((data) => {
+                  {data.map((data, i) => {
                     return (
                       <tr key={data._id}>
-                        <th scope="row">{data._id}</th>
+                        <th scope="row">{i + 1}</th>
                         <td>{data.productName}</td>
                         <td>
                           <span
@@ -160,7 +152,7 @@ function Page() {
                             </>
                           ) : data.status ? (
                             <span
-                              className="btn d-flex align-items-center w-75 justify-content-center"
+                              className="btn d-flex align-items-center w-75 justify-content-center mx-auto"
                               style={{
                                 backgroundColor: "rgba(229, 250, 234, 1)",
                                 color: "#22C55E",
@@ -171,7 +163,7 @@ function Page() {
                             </span>
                           ) : (
                             <span
-                              className="btn me-2 d-flex align-items-center w-75 justify-content-center"
+                              className="btn d-flex align-items-center w-75 justify-content-center mx-auto"
                               style={{
                                 backgroundColor: "rgba(255, 103, 103, 0.38)",
                                 color: "#D32525",

@@ -7,7 +7,7 @@ import React from "react";
 function Nav() {
   const pathname = usePathname();
   return (
-    <nav className="navbar navbar-expand-lg">
+    <nav className="navbar navbar-expand-lg" style={{ zIndex: 99 }}>
       <div className="container">
         <Link className="navbar-brand" href="/">
           <Image src="/logo.png" alt="Logo" width={100} height={100} />

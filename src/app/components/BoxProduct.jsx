@@ -25,7 +25,8 @@ function BoxProduct({ product, handleDelete }) {
         className="btn btn-primary w-50 fw-bold"
         href={`/admin/products/update-product/${product._id}`}
       >
-        تعديل
+        <span>تعديل</span>
+        <i className="bi bi-pencil me-3"></i>
       </Link>
       <div
         className="dele-icon position-absolute d-flex justify-content-center align-items-center"

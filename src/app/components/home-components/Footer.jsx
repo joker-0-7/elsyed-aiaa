@@ -47,8 +47,8 @@ function Footer() {
           <section className="py-4 ">
             <div className="text-center text-md-start mt-5">
               <div className="row mt-3">
-                <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                  <h6 className="text-uppercase fw-bold mb-4 text-end">
+                <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4 text-md-start text-sm-center">
+                  <h6 className="text-uppercase fw-bold mb-4 text-md-end text-sm-center">
                     <Image
                       src="/logo.png"
                       width={63}
@@ -93,7 +93,7 @@ function Footer() {
                   <h6 className="text-uppercase fw-bold mb-4">اتصل بنا</h6>
                   <p>
                     <i className="fas fa-envelope me-3" />
-                    elmohands1133@gmail.com
+                    support@alsayedalaa.com.eg
                   </p>
                   <p>
                     <i className="fas fa-phone me-3" /> 01006169399

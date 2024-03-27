@@ -16,13 +16,16 @@ export default function AdminLayout({ children }) {
   return (
     <div className="admin-page" style={{ minHeight: "100vh" }}>
       <div className="row" style={{ minHeight: "100vh" }}>
-        {pathname.split("/")[2] !== "login" && (
-          <div className="div">
-            <Sidebar />
-          </div>
-        )}
-
-        <div className="div">{children}</div>
+        <div className="col-lg-2 col-sm-12">
+          {pathname.split("/")[2] !== "login" && (
+            <div className="div">
+              <Sidebar />
+            </div>
+          )}
+        </div>
+        <div className="col-lg-10 col-sm-12">
+          <div className="div">{children}</div>
+        </div>
       </div>
     </div>
   );

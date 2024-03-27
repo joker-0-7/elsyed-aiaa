@@ -13,6 +13,12 @@ function Products() {
   const [client, setClient] = useState(false);
   const [current, setCurrent] = useState(1);
   const [data, setData] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [step, setStep] = useState(1);
+  const openModal = () => {
+    setIsOpen(true);
+    setStep(1); // إعادة الخطوة إلى الأولى عند فتح النموذج
+  };
   const getData = async () => {
     try {
       await axios
@@ -171,6 +177,7 @@ function Products() {
                                 "productName",
                                 product.name
                               );
+                              openModal();
                             }}
                           >
                             اطلب الأن
@@ -211,7 +218,12 @@ function Products() {
           </div>
         </div>
       </div>
-      <Modal />
+      <Modal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        step={step}
+        setStep={setStep}
+      />
     </div>
   ) : (
     <Loader />

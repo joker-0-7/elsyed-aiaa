@@ -50,14 +50,14 @@ function Page() {
         <div className="box-contact-us w-100" style={{ minHeight: "80vh" }}>
           <div className="row w-100 h-100">
             <div
-              className="col-lg-8 col-sm-12 rounded-end-4 px-5 py-4 right"
+              className="col-lg-8 col-sm-12 rounded-end-4 px-5 py-4 one"
               style={{ backgroundColor: "rgba(245, 245, 245, 1)" }}
             >
               <div className="title">
                 <h1 className="fw-bold">احنا هنا علشانك ، خليك</h1>
                 <h1 className="fw-bold">علي تواصل 👋</h1>
               </div>
-              <div className="content">
+              <div className="content mt-5">
                 <form onSubmit={handleSubmit}>
                   <div className="row row-gap-4 align-content-end h-100">
                     <div className="col-lg-6 col-sm-12">
@@ -147,8 +147,11 @@ function Page() {
                       />
                     </div>
                     <div className="col-12">
-                      <button className="btn btn-primary w-25 fs-5">
-                        ارسال
+                      <button className="btn btn-primary d-flex justify-content-center align-items-center w-25 fs-5">
+                        <span>ارسال</span>
+                        <span>
+                          <i className="bi bi-arrow-up-left me-3"></i>
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -180,7 +183,7 @@ function Page() {
                       تواصل معنا علي البريد الالكتروني
                     </h4>
                     <p>فريقنا متواجد هنا للمساعدة</p>
-                    <p className="text-blue">elmohands1133@gmail.com</p>
+                    <p className="text-blue">support@alsayedalaa.com.eg</p>
                   </div>
                 </div>
                 <div className="col-12 d-flex justify-content-around">
@@ -195,7 +198,7 @@ function Page() {
                   <div className="data w-75">
                     <h4 className="fw-bold">للمهن</h4>
                     <p>أرسل سيرتك الذاتية على</p>
-                    <p className="text-blue">elmohands1133@gmail.com</p>
+                    <p className="text-blue">support@alsayedalaa.com.eg</p>
                   </div>
                 </div>
                 <div className="col-12 d-flex justify-content-around">
@@ -222,10 +225,10 @@ function Page() {
                     <i className="bi bi-geo-alt text-blue"></i>
                   </div>
                   <div className="data w-75">
-                    <h4 className="fw-bold">عنوان الشركة</h4>
+                    <h4 className="fw-bold">عنوان المؤسسة</h4>
                     <p>المقر الرئيسي لمكتبنا</p>
                     <p className="text-blue">
-                      السنبلاوين - المنصورة، محافظة الدقهلية 35111
+                      السنبلاوين - المنصورة، محافظة الدقهلية
                     </p>
                   </div>
                 </div>
